@@ -1,0 +1,10 @@
+Minsk, 4, Jumbo Passenger Jet, 10, 11, 23, SUNDAY, 19.99
+Beijing, 2, Mid Size Passenger Jet, 5, 25, 1, FRIDAY, 10.00
+Denver, 1, Light Passenger Jet, 14, 32, 56, MONDAY, 9.39
+Minsk, 3, Passenger Turbo Props, 19, 19, 19, FRIDAY, 15.55
+Denver, 5, Cargo, 23, 59, 59, WEDNESDAY, 34.23
+Barcelona, 7, Jumbo Passenger Jet, 9, 54, 22, TUESDAY, 15.99
+Beijing, 6, Mid Size Passenger Jet, 3, 5, 15, SATURDAY, 40.00
+Denver, 8, Light Passenger Jet, 20, 30, 50, MONDAY, 19.39
+Minsk, 9, Passenger Turbo Props, 17, 01, 02, THURSDAY, 10.55
+Denver, 10, Cargo, 23, 59, 59, WEDNESDAY, 24.23

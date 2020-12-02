@@ -1,0 +1,1 @@
+02-12-2020 20:36:29 (4623ms) addAirline ERROR impl.AirportServiceImpl - com.epam.airline.exception.DaoException: Same airline in the list

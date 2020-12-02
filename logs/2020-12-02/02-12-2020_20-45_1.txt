@@ -1,0 +1,2 @@
+02-12-2020 20:45:37 (3313ms) updateAirline ERROR impl.AirportServiceImpl - com.epam.airline.exception.DaoException: No such airline
+02-12-2020 20:45:56 (4229ms) updateAirline ERROR impl.AirportServiceImpl - com.epam.airline.exception.DaoException: No such airline
