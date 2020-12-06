@@ -86,7 +86,7 @@ public class AirportServiceImpl implements AirportService {
             throw new ServiceException(NULL_OBJECT_ERROR_MESSAGE);
         }
         if (!AirlineValidator.isDestinationValid(destination)) {
-            throw new ServiceException(WRONG_ARGUMENT_ERROR_MESSAGE);
+            throw new ServiceException(WRONG_ARGUMENT_ERROR_MESSAGE + " - " + destination);
         }
         return airlineDao.findByDestination(destination).get();
     }
@@ -105,7 +105,7 @@ public class AirportServiceImpl implements AirportService {
             throw new ServiceException(NULL_OBJECT_ERROR_MESSAGE);
         }
         if (!AirlineValidator.isDestinationValid(destination)) {
-            throw new ServiceException(WRONG_ARGUMENT_ERROR_MESSAGE);
+            throw new ServiceException(WRONG_ARGUMENT_ERROR_MESSAGE + " - " + destination);
         }
         return airlineDao.findByDestinationAndByDayOfWeek(destination, dayOfWeek).get();
     }
