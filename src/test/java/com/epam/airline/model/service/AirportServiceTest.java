@@ -1,13 +1,10 @@
 package com.epam.airline.model.service;
 
-import com.epam.airline.exception.DaoException;
 import com.epam.airline.exception.ServiceException;
-import com.epam.airline.model.creator.AirlineCreator;
+import com.epam.airline.model.filler.AirportFiller;
 import com.epam.airline.model.dao.AirlineDao;
 import com.epam.airline.model.dao.impl.AirlineDaoImpl;
 import com.epam.airline.model.entity.Airline;
-
-import static org.testng.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
@@ -20,18 +17,20 @@ import com.epam.airline.model.service.impl.AirportServiceImpl;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertEquals;
+
 public class AirportServiceTest {
 
     private List<Airline> airlinesList;
     private AirlineDao dao = new AirlineDaoImpl();
     private AirportService service = new AirportServiceImpl(dao);
-    private AirlineCreator creator = new AirlineCreator();
+    private AirportFiller filler = new AirportFiller();
 
     @BeforeMethod
-    public void initializeAirlines() throws DaoException {
+    public void initializeAirlines() {
         String path = "data\\airlines.txt";
         dao.clearAllAirlines();
-        dao.add(creator.createAirlines(path));
+        filler.fillAirportWithAirlines(path);
         airlinesList = new ArrayList<>();
         airlinesList.add(new Airline("Minsk", "4", "Jumbo Passenger Jet",
                 LocalTime.of(10, 11, 23), DayOfWeek.SUNDAY,
