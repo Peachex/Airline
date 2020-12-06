@@ -1,6 +1,7 @@
-package com.epam.airline.model.creator;
+package com.epam.airline.model.reader;
 
 import com.epam.airline.model.entity.Airline;
+import com.epam.airline.validator.AirlineValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,14 +9,14 @@ import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
-public class AirlineCreator {
+public class AirlineReader {
     private static final Logger logger = LogManager.getLogger();
     private static final int DESTINATION_FIELD_NUMBER = 0;
     private static final int FLIGHT_NUMBER_FIELD_NUMBER = 1;
@@ -26,7 +27,7 @@ public class AirlineCreator {
     private static final int DAY_OF_WEEK_FIELD_NUMBER = 6;
     private static final int TICKET_COST_FIELD_NUMBER = 7;
 
-    public List<Airline> createAirlines(String path) {
+    public List<Airline> readAirlinesFromFile(String path) {
         StringBuilder sb = new StringBuilder();
         try (java.io.FileReader fr = new java.io.FileReader(path); BufferedReader br = new BufferedReader(fr)) {
             String str;
@@ -43,16 +44,25 @@ public class AirlineCreator {
         List<Airline> result = new ArrayList<>();
 
         for (String airline : airlines) {
-            result.add(convertStringToAirline(airline));
+            if (convertStringToAirline(airline).isPresent()) {
+                result.add(convertStringToAirline(airline).get());
+            }
         }
         return result;
     }
 
-    private Airline convertStringToAirline(String str) {
+    private Optional<Airline> convertStringToAirline(String str) {
+        Optional<Airline> result = Optional.empty();
+
         String elementDelimiter = ",\\s";
         Pattern pattern = Pattern.compile(elementDelimiter);
         String[] fields = pattern.split(str);
-        String destination = fields[DESTINATION_FIELD_NUMBER];
+
+        String destination = null;
+        if (AirlineValidator.isDestinationValid(fields[DESTINATION_FIELD_NUMBER])) {
+            destination = fields[DESTINATION_FIELD_NUMBER];
+        }
+
         String flightNumber = fields[FLIGHT_NUMBER_FIELD_NUMBER];
         String planeType = fields[PLANE_TYPE_FIELD_NUMBER];
 
@@ -62,10 +72,17 @@ public class AirlineCreator {
         LocalTime departureTime = LocalTime.of(hour, minute, second);
 
         String day = fields[DAY_OF_WEEK_FIELD_NUMBER];
-        DayOfWeek dayOfWeek = DayOfWeek.valueOf(day);
+        DayOfWeek dayOfWeek = null;
+        if (AirlineValidator.isDayOfWeekValid(fields[DAY_OF_WEEK_FIELD_NUMBER])) {
+            dayOfWeek = DayOfWeek.valueOf(day);
+        }
 
-        BigDecimal ticketCost = new BigDecimal(fields[TICKET_COST_FIELD_NUMBER]);
+        BigDecimal ticketCost = null;
+        if (AirlineValidator.isTicketCostValid(fields[TICKET_COST_FIELD_NUMBER])) {
+            ticketCost = new BigDecimal(fields[TICKET_COST_FIELD_NUMBER]);
+        }
 
-        return new Airline(destination, flightNumber, planeType, departureTime, dayOfWeek, ticketCost);
+        return (destination == null && dayOfWeek == null && ticketCost == null) ?
+                result : Optional.of(new Airline(destination, flightNumber, planeType, departureTime, dayOfWeek, ticketCost));
     }
 }
